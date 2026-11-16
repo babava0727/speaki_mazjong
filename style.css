@@ -1,8 +1,7 @@
 /* 화면 글꼴: fonts/MonaS12 (픽셀 글꼴, 보통·굵게). 용량을 줄인 woff2를 쓴다 */
 @font-face { font-family: 'MonaS12'; src: url('fonts/MonaS12.woff2') format('woff2'); font-weight: 400; font-display: block; }
 @font-face { font-family: 'MonaS12'; src: url('fonts/MonaS12-Bold.woff2') format('woff2'); font-weight: 700; font-display: block; }
-/* 패 앞면 한자(一~九, 萬, 東南西北, 發中)용: Noto Serif JP Black에서 그 글자만 뽑아 둔 것(SIL OFL) */
-@font-face { font-family: 'Noto Serif JP'; src: url('fonts/NotoSerifJP-tiles.woff2') format('woff2'); font-weight: 900; font-display: block; }
+/* 패 앞면 한자 글꼴(Noto Serif JP, SIL OFL)은 캔버스에만 쓰므로 js/textures.js의 loadFonts가 직접 불러온다 */
 
 :root {
   --gold: #ffcf6b;

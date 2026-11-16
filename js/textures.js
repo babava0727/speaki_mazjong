@@ -7,17 +7,21 @@ const NUM_KANJI = '一二三四五六七八九';
 
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
-// 글꼴은 style.css의 @font-face(fonts/ 폴더)로 들어온다. 패 그림을 그리기 전에 다 받아 둔다
+// 캔버스(패 앞면·가운데 콘솔)에 쓰는 글꼴. 패 그림을 그리기 전에 직접 받아 둔다.
+// (style.css의 @font-face만 믿으면, 인터넷으로 받을 때 스타일 파일보다 이 코드가 먼저 돌아 한자 글꼴을 놓칠 수 있다)
+const FONT_FILES = [
+  ['Noto Serif JP', 'fonts/NotoSerifJP-tiles.woff2', '900'], // 패 한자(一~九, 萬, 東南西北, 發中)만 담은 것
+  ['MonaS12', 'fonts/MonaS12.woff2', '400'],
+  ['MonaS12', 'fonts/MonaS12-Bold.woff2', '700'],
+];
+
 export async function loadFonts() {
-  const chars = NUM_KANJI + '萬東南西北發中';
-  await Promise.race([
-    Promise.all([
-      document.fonts.load('900 100px "Noto Serif JP"', chars),
-      document.fonts.load('40px MonaS12', '가나다라 0123'),
-      document.fonts.load('700 40px MonaS12', '가나다라 0123'),
-    ]).catch(() => {}),
-    wait(5000),
-  ]);
+  const faces = FONT_FILES.map(([family, url, weight]) => {
+    const face = new FontFace(family, `url(${url}) format('woff2')`, { weight, display: 'block' });
+    document.fonts.add(face);
+    return face.load().catch(() => null);
+  });
+  await Promise.race([Promise.all(faces), wait(8000)]);
 }
 
 function disc(g, x, y, r, col) {
